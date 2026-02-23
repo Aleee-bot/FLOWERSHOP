@@ -1,1 +1,26 @@
-<h1>home page</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flower Shop Chatbot</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Flower Shop Assistant</h2>
+
+    <textarea id="question" placeholder="Ask your question here..."></textarea>
+
+    <button onclick="generateAnswer()">Ask</button>
+
+    <div class="answer" id="answer">
+        Answer will appear here...
+    </div>
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
