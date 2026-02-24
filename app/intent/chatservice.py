@@ -9,7 +9,7 @@ def handle_user_message(message: str):
 
         if flower_data["status"] == "found":
             if decision["intent"] == "price":
-                return f"The price of {flower_data['flower_name']} is ${flower_data['flower_price']}."
+                return f"The price of {flower_data['flower_name']} is Rs.{flower_data['flower_price']}."
 
 
             if decision["intent"] == "quantity":
