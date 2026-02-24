@@ -1,31 +1,41 @@
 function generateAnswer() {
-    console.log("generateAnswer function called");
-    const question = document.getElementById("question").value;
-    const answerBox = document.getElementById("answer");
+    const questionInput = document.getElementById("question");
+    const chatBox = document.getElementById("chatBox");
 
-    if (question.trim() === "") {
-        answerBox.innerText = "Please enter a question.";
-        return;
-    }
+    const question = questionInput.value.trim();
+    if (!question) return;
+    chatBox.innerHTML += `
+        <div class="chat user">
+            <strong>You:</strong> ${question}
+        </div>
+    `;
 
-    answerBox.innerText = "Processing your question...";
+    questionInput.value = "";
+
+    const thinkingId = `thinking-${Date.now()}`;
+    chatBox.innerHTML += `
+        <div class="chat bot" id="${thinkingId}">
+            <strong>Bot:</strong> Typing...
+        </div>
+    `;
+
+    chatBox.scrollTop = chatBox.scrollHeight;
 
     fetch("/chat/", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: question
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: question })
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-        console.log("Server response:", data);
-        answerBox.innerText = data.response;
+        document.getElementById(thinkingId).innerHTML = `
+            <strong>Bot:</strong> ${data.response}
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
     })
-    .catch(error => {
-        console.error("Error:", error);
-        answerBox.innerText = "Something went wrong!";
+    .catch(() => {
+        document.getElementById(thinkingId).innerHTML = `
+            <strong>Bot:</strong> Sorry, something went wrong.
+        `;
     });
 }
